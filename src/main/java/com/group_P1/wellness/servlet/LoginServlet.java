@@ -17,11 +17,11 @@ public class LoginServlet extends HttpServlet {
             // Example DB setup — adjust credentials and URL
             Class.forName("org.postgresql.Driver");
             Connection conn = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/yourDB", "yourUser", "yourPass"
+                    "jdbc:postgresql://localhost:5353/PRG381_wellness", "postgres", "Ven06246"
             );
 
             PreparedStatement ps = conn.prepareStatement(
-                    "SELECT name FROM students WHERE username=? AND password=?"
+                    "SELECT * FROM students WHERE username=? AND password=?"
             );
             ps.setString(1, username);
             ps.setString(2, password);
@@ -37,6 +37,7 @@ public class LoginServlet extends HttpServlet {
                 // Failure: redirect back to login with error
                 response.sendRedirect("login.jsp?error=invalid");
             }
+            System.out.println("Login query executed. Match found: " + rs.next());
 
             conn.close();
 
