@@ -1,0 +1,38 @@
+ body {
+                font-family: Arial, sans-serif;
+                margin: 40px;
+                text-align: center;
+                background-color: #f4f4f4;
+                color: #333;
+            }
+            .container {
+                background-color: #fff;
+                padding: 30px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                display: inline-block; /* To center the block */
+            }
+            h1 {
+                color: #0056b3;
+                margin-bottom: 30px;
+            }
+            .btn-group a {
+                display: inline-block;
+                margin: 10px;
+                padding: 12px 25px;
+                background-color: #007bff;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+                font-size: 1.1em;
+                transition: background-color 0.3s ease;
+            }
+            .btn-group a:hover {
+                background-color: #0056b3;
+            }
+            .btn-group a.register-btn {
+                background-color: #28a745; /* A different color for register */
+            }
+            .btn-group a.register-btn:hover {
+                background-color: #218838;
+            }

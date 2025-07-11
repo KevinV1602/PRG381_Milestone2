@@ -3,11 +3,19 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Welcome to My Web App</title>
+    <title>BC Student Wellness Management System</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1>Hello, world!</h1>
-    <p>This is the default landing page: <strong>index.jsp</strong></p>
+    <div class="container">
+            <h1>Welcome to BC Student Wellness Management System</h1>
+            <p>Your hub for managing wellness services, appointments, and feedback.</p>
+            <div class="btn-group">
+                <a href="login.jsp">Login</a>
+                <a href="register.jsp" class="register-btn">Sign Up</a>
+            </div>
+        </div>
 </body>
 </html>
 
