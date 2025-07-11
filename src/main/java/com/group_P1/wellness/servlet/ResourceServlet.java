@@ -8,19 +8,18 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/ResourceServlet")
-@SuppressWarnings("unused") // Suppress "Class is never used" warning for IDE
+@SuppressWarnings({"unused", "java:S112"})
 public class ResourceServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // This forwards to resources.jsp. Actual data fetching logic will go here later if dynamic.
         request.getRequestDispatcher("/resources.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response); // Typically, viewing is a GET operation
+        doGet(request, response);
     }
 }
