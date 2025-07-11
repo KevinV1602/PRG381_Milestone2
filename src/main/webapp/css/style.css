@@ -1,0 +1,307 @@
+/* --- Global Styles (from your original index.css) --- */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    text-align: center;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Generic Container (for index.jsp, login.jsp, and general use) */
+.container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 600px; /* Default width for containers */
+    margin: 50px auto;
+    text-align: center; /* Default text alignment */
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    color: #87CEFA; /* Sky Blue */
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 2.2em;
+}
+
+/* Header Styles */
+.main-header {
+    background-color: #0056b3; /* Darker Blue */
+    color: white;
+    padding: 15px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    width: 100%;
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.logo-img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+/* Main Navigation Bar Styles */
+.main-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.main-nav ul li {
+    margin-left: 15px;
+}
+
+/* Base style for all nav buttons (a and form submit) */
+.main-nav ul li a.nav-button,
+.main-nav ul li form.nav-logout-form input[type="submit"] {
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    display: inline-block;
+    cursor: pointer;
+    font-family: Arial, sans-serif; /* Consistent font for submit buttons */
+    /* Remove default button appearance for inputs */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+/* Specific nav button styles */
+.main-nav ul li a.nav-login-btn {
+    background-color: #ADD8E6; /* Light Blue */
+    color: #333;
+    border: 1px solid #9AC7DC;
+}
+
+.main-nav ul li a.nav-login-btn:hover {
+    background-color: #9ECFE0;
+    border-color: #89B3CC;
+}
+
+.main-nav ul li a.nav-register-btn {
+    background-color: #FFFFAA; /* Light Yellow */
+    color: #333;
+    border: 1px solid #E0E080;
+}
+
+.main-nav ul li a.nav-register-btn:hover {
+    background-color: #FEEF80;
+    border-color: #D0D070;
+}
+
+/* Style for the 'Home' button in nav bar (if used on login.jsp) */
+.main-nav ul li a.nav-home-btn {
+    background-color: #6c757d; /* A neutral grey */
+    color: white;
+    border: 1px solid #5a6268;
+}
+
+.main-nav ul li a.nav-home-btn:hover {
+    background-color: #5a6268;
+    border-color: #4e555b;
+}
+
+/* Main content area (generic centering for the container) */
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center; /* Center horizontally overall */
+    align-items: center; /* Align content to center vertically by default */
+    padding: 20px;
+}
+
+.central-message {
+    font-size: 1.1em;
+    margin-bottom: 30px;
+    color: #555;
+    line-height: 1.6;
+    max-width: 400px;
+}
+
+/* --- Dashboard Specific Styles (from your dashboard.css) --- */
+
+/* Styles for the Logout button in the header nav (dashboard.jsp) */
+.nav-logout-form {
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+}
+
+.nav-button.nav-logout-btn { /* Note: This applies to the submit input within the form */
+    background-color: #dc3545; /* Red for logout */
+    color: white;
+    border: 1px solid #c82333;
+}
+
+.nav-button.nav-logout-btn:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+/* Dashboard's main content area container */
+/* This specific class will override the generic .container for dashboard content */
+.dashboard-content-area {
+    max-width: 800px; /* Make the dashboard container wider */
+    text-align: left; /* Align text inside dashboard container to left by default */
+    /* It inherits background-color, padding, border-radius, box-shadow, margin from .container */
+}
+
+/* Main content alignment for dashboard (if it needs to override the default .main-content) */
+/* The default .main-content is already display:flex, justify-content:center, align-items:center.
+   If the dashboard content itself needs to be flex-start, that should be applied to .dashboard-content-area
+   or specific children within it. So, no override here for .main-content directly. */
+
+
+/* Dashboard introduction text */
+.dashboard-intro {
+    font-size: 1.1em;
+    margin-bottom: 25px;
+    text-align: center;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Info section for quick overview */
+.dashboard-info-section {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 6px;
+    margin-bottom: 30px;
+    border: 1px solid #eee;
+    text-align: left;
+    width: 100%;
+}
+
+.dashboard-info-section h2 {
+    color: #007bff;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.4em;
+    text-align: center;
+}
+
+.dashboard-info-section ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dashboard-info-section ul li {
+    margin-bottom: 10px;
+}
+
+.dashboard-info-section ul li a.quick-link {
+    display: block;
+    background-color: #e9ecef;
+    padding: 10px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #0056b3;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    text-align: center;
+}
+
+.dashboard-info-section ul li a.quick-link:hover {
+    background-color: #d6e0e6;
+    color: #004085;
+}
+
+/* Actions section (e.g., logout button in main content) */
+.dashboard-actions {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.dashboard-actions p {
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    color: #555;
+}
+
+/* Large Logout Button Style in main content */
+.button-big {
+    padding: 15px 30px;
+    font-size: 1.2em;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    background-color: #dc3545; /* Red */
+    color: white;
+    border: 1px solid #c82333;
+}
+
+.button-big.logout-button:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+
+/* --- Footer Styles (common to all pages) --- */
+.main-footer {
+    background-color: #222;
+    color: #eee;
+    padding: 20px 0;
+    font-size: 0.9em;
+    margin-top: auto;
+    width: 100%;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-footer p {
+    margin: 5px 0;
+    line-height: 1.5;
+}
+
+.main-footer a {
+    color: #87CEFA;
+    text-decoration: none;
+}
+
+.main-footer a:hover {
+    text-decoration: underline;
+}
+
+.attribution-text {
+    font-size: 0.7em;
+    color: #bbb;
+    margin-top: 10px;
+}
