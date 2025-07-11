@@ -62,9 +62,9 @@
                     and other important information.
                 </p>
                 <ul>
-                    <li><a href="#" class="quick-link">View My Appointments (Future)</a></li>
-                    <li><a href="#" class="quick-link">Submit Feedback (Future)</a></li>
-                    <li><a href="#" class="quick-link">Access Resources (Future)</a></li>
+                    <li><a href="appointments.jsp" class="quick-link">View My Appointments (Future)</a></li>
+                    <li><a href="submitFeedback.jsp" class="quick-link">Submit Feedback (Future)</a></li>
+                    <li><a href="resources.jsp" class="quick-link">Access Resources (Future)</a></li>
                 </ul>
             </div>
 
