@@ -165,11 +165,6 @@
                     </div>
                 </div> <%-- End wellness-category-grid --%>
             </div> <%-- End wellness-pillar --%>
-
-            <p class="intro-text" style="margin-top: 40px;">
-                *Note: Actual booking functionality (selecting dates, times, specific counselors) would be developed in a future phase.*
-            </p>
-
         </div>
     </main>
 
@@ -181,5 +176,35 @@
             </p>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const bookButtons = document.querySelectorAll('.button-small');
+
+            bookButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault(); // This stops the '#' from making the page jump
+
+                    // Find the h3 element within the same wellness-category-card as the clicked button
+                    const categoryName = this.closest('.wellness-category-card').querySelector('h3').textContent;
+
+                    // Encode the name to make it URL-safe
+                    const encodedCategoryName = encodeURIComponent(categoryName);
+
+                    // Redirect to the scheduleBooking.jsp page, passing the category name
+                    window.location.href = 'scheduleBooking.jsp?category=' + encodedCategoryName;
+                });
+            });
+
+            // If you have specific handling for the dashboard button (not related to booking flow)
+            const dashboardButton = document.querySelector('.main-nav ul li a[href="dashboard.jsp"]');
+            if (dashboardButton) {
+                dashboardButton.addEventListener('click', function(event) {
+                    // No preventDefault here unless you want to stop it from navigating
+                    // console.log('Dashboard button clicked!');
+                });
+            }
+        });
+    </script>
 </body>
 </html>
