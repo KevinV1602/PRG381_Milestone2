@@ -2,28 +2,24 @@
 <%@ page import="javax.servlet.http.*, javax.servlet.*" %>
 <%@ page session="true" %>
 <%
+    String studentName = (String) session.getAttribute("studentName");
+    // Removed: Boolean loginSuccess = (Boolean) session.getAttribute("loginSuccess");
+    // Removed: if (loginSuccess != null && loginSuccess) { session.removeAttribute("loginSuccess"); }
 
-
-        String studentName = (String) session.getAttribute("studentName");
-
-        if (studentName == null) {
-           response.sendRedirect("login.jsp");
-           return;
-       }
-
-
+    if (studentName == null) {
+       response.sendRedirect("login.jsp");
+       return;
+    }
 %>
-<%-- JSTL is NOT needed since you are using scriptlets for session management --%>
-<%-- If you prefer JSTL for cleaner code later, you can replace the scriptlet with JSTL --%>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - BC Student Wellness</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <%-- Removed: Font Awesome CSS link --%>
 </head>
 <body>
     <header class="main-header">
@@ -46,34 +42,37 @@
     </header>
 
     <main class="main-content">
-        <div class="container">
-            <%-- Personalized Welcome Message using scriptlet --%>
+        <div class="container dashboard-content-area">
+            <%-- Personalized Welcome Message --%>
             <h1>Welcome, <%= studentName %>!</h1>
 
             <p class="dashboard-intro">
                 You are now logged in to the BC Student Wellness Management System.
-                Use this dashboard to manage your wellness services.
+                Manage your wellness journey here.
             </p>
 
-            <div class="dashboard-info-section">
-                <h2>Quick Overview</h2>
-                <p>
-                    This section will eventually contain summaries of your appointments, feedback,
-                    and other important information.
-                </p>
-                <ul>
-                    <li><a href="appointments.jsp" class="quick-link">View My Appointments (Future)</a></li>
-                    <li><a href="submitFeedback.jsp" class="quick-link">Submit Feedback (Future)</a></li>
-                    <li><a href="resources.jsp" class="quick-link">Access Resources (Future)</a></li>
-                </ul>
+            <hr class="separator"> <%-- Visual separator for main action --%>
+
+            <%-- Main "Book a Session" Section --%>
+            <div class="dashboard-main-action">
+                <h2>Ready to Focus on Your Well-being?</h2>
+                <p>Book a session with one of our wellness professionals or explore available workshops.</p>
+                <a href="bookSession.jsp" class="button-big book-session-button">
+                    <img src="images/makeBooking.png" alt="Book Icon" class="icon"> Book a Session Now
+                </a>
             </div>
 
-            <%-- Optional: A larger logout button in the main content area for prominence --%>
-            <div class="dashboard-actions">
-                <p>Ready to log out?</p>
-                <form action="LogoutServlet" method="post">
-                    <input type="submit" value="Logout" class="button-big logout-button" />
-                </form>
+            <hr class="separator"> <%-- Visual separator for quick actions --%>
+
+            <%-- Other Quick Actions Section --%>
+            <div class="dashboard-info-section">
+                <h2>My Wellness Journey</h2>
+                <p>Quick access to other important areas:</p>
+                <ul>
+                    <li><a href="appointments.jsp" class="quick-link"><img src="images/appointment.png" alt="Appointments Icon" class="icon"> View My Appointments </a></li>
+                    <li><a href="resources.jsp" class="quick-link"><img src="images/resources.png" alt="Resources Icon" class="icon"> Access Resources </a></li>
+                    <li><a href="submitFeedback.jsp" class="quick-link"><img src="images/feedback.png" alt="Feedback Icon" class="icon"> Submit Feedback </a></li>
+                </ul>
             </div>
         </div>
     </main>
@@ -82,7 +81,7 @@
         <div class="footer-content">
             <p>&copy; 2025 Belgium Campus. All rights reserved.</p>
             <p class="attribution-text">
-                <img src="images/heart.png"  class="logo-img">
+                <img src="images/heart.png" alt="Heart icon" class="logo-img">
             </p>
         </div>
     </footer>
