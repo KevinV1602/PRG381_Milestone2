@@ -19,8 +19,6 @@
                 <p>Create your account to get started</p>
             </div>
 
-            <div id="alertContainer"></div>
-
             <form id="registrationForm" novalidate>
                 <div class="form-group">
                     <label for="firstName">First Name</label>
