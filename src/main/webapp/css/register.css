@@ -1,3 +1,14 @@
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-primary: #333;
+            --text-secondary: #666;
+            --error-color: #ff6b6b;
+            --success-color: #51cf66;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -6,101 +17,254 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--primary-gradient);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-        }
-
-        .registration-container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            padding: 40px;
-            width: 100%;
-            max-width: 800px;
             position: relative;
-            overflow: hidden;
+            overflow-x: hidden;
+            padding: 1rem;
         }
 
-        .registration-container::before {
+        body::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .registration-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 550px;
+            position: relative;
+            z-index: 2;
+            animation: slideIn 0.8s ease-out;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .header h1 {
-            color: #333;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            font-weight: 600;
+            color: white;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .header p {
-            color: #666;
-            font-size: 1.1em;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .wellness-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--secondary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        .wellness-icon i {
+            color: white;
+            font-size: 2.5rem;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        #alertContainer {
+            margin-bottom: 1.5rem;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .alert-error {
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid rgba(255, 107, 107, 0.4);
+            color: #ff6b6b;
+        }
+
+        .alert-success {
+            background: rgba(81, 207, 102, 0.2);
+            border: 1px solid rgba(81, 207, 102, 0.4);
+            color: #51cf66;
         }
 
         .form-group {
-            margin-bottom: 20px;
             position: relative;
+            margin-bottom: 1.5rem;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 500;
-            font-size: 0.95em;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
         }
 
         .form-group input {
-            width: 95%;
-            padding: 15px 20px;
-            border: 2px solid #e1e5e9;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 12px;
-            font-size: 1em;
+            padding: 1rem 1rem 1rem 3rem;
+            color: white;
+            font-size: 1rem;
             transition: all 0.3s ease;
-            background: #f8f9fa;
+            backdrop-filter: blur(10px);
+            width: 100%;
         }
 
         .form-group input:focus {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+            color: white;
             outline: none;
-            border-color: #667eea;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .form-group input.error {
+            border-color: var(--error-color);
+            background: rgba(255, 107, 107, 0.1);
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .form-group input.success {
+            border-color: var(--success-color);
+            background: rgba(81, 207, 102, 0.1);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+            z-index: 1;
+            margin-top: 0.75rem;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            font-size: 1rem;
+            z-index: 2;
+            margin-top: 0.75rem;
+            transition: color 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: white;
+        }
+
+        .validation-message {
+            color: var(--error-color);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .validation-message.show {
+            display: block;
         }
 
         .submit-btn {
             width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            padding: 1.25rem;
+            background: var(--secondary-gradient);
             border: none;
             border-radius: 12px;
-            font-size: 1.1em;
+            color: white;
+            font-size: 1.1rem;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-top: 20px;
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin-top: 1rem;
         }
 
         .submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
         }
 
         .submit-btn:disabled {
@@ -109,56 +273,108 @@
             transform: none;
         }
 
-        .submit-btn.loading {
-            color: transparent;
-        }
-
-        .submit-btn.loading::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 20px;
-            height: 20px;
-            margin: -10px 0 0 -10px;
-            border: 2px solid transparent;
-            border-top: 2px solid white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .alert.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
         .login-link {
             text-align: center;
-            margin-top: 20px;
-            color: #666;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
         }
 
         .login-link a {
-            color: #667eea;
+            color: white;
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
+            transition: color 0.3s ease;
         }
 
         .login-link a:hover {
-            text-decoration: underline;
+            color: #f093fb;
+        }
+
+        .strength-meter {
+            margin-top: 0.5rem;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .strength-bar {
+            height: 100%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .strength-weak { background: #ff6b6b; width: 25%; }
+        .strength-fair { background: #ffd93d; width: 50%; }
+        .strength-good { background: #6bcf7f; width: 75%; }
+        .strength-strong { background: #51cf66; width: 100%; }
+
+        .password-requirements {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .requirement {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .requirement.met {
+            color: var(--success-color);
+        }
+
+        .requirement i {
+            width: 12px;
+            font-size: 0.7rem;
+        }
+
+        @media (max-width: 768px) {
+            .registration-container {
+                margin: 0.5rem;
+                padding: 2rem;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .wellness-icon {
+                width: 60px;
+                height: 60px;
+            }
+
+            .wellness-icon i {
+                font-size: 2rem;
+            }
+
+            .form-group input {
+                padding: 0.9rem 0.9rem 0.9rem 2.5rem;
+            }
+
+            .input-icon {
+                left: 0.8rem;
+            }
+
+            .password-toggle {
+                right: 0.8rem;
+            }
         }
 
         @media (max-width: 480px) {
             .registration-container {
-                padding: 30px 20px;
+                padding: 1.5rem;
             }
 
             .header h1 {
-                font-size: 2em;
+                font-size: 1.6rem;
+            }
+
+            .form-group input {
+                padding: 0.8rem 0.8rem 0.8rem 2.2rem;
             }
