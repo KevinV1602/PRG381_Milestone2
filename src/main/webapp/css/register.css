@@ -123,33 +123,6 @@
             100% { transform: scale(1); }
         }
 
-        #alertContainer {
-            margin-bottom: 1.5rem;
-        }
-
-        .alert {
-            padding: 1rem;
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        .alert-error {
-            background: rgba(255, 107, 107, 0.2);
-            border: 1px solid rgba(255, 107, 107, 0.4);
-            color: #ff6b6b;
-        }
-
-        .alert-success {
-            background: rgba(81, 207, 102, 0.2);
-            border: 1px solid rgba(81, 207, 102, 0.4);
-            color: #51cf66;
-        }
-
         .form-group {
             position: relative;
             margin-bottom: 1.5rem;
@@ -228,19 +201,6 @@
             color: white;
         }
 
-        .validation-message {
-            color: var(--error-color);
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-            font-weight: 500;
-            display: none;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        .validation-message.show {
-            display: block;
-        }
-
         .submit-btn {
             width: 100%;
             padding: 1.25rem;
@@ -291,47 +251,6 @@
 
         .login-link a:hover {
             color: #f093fb;
-        }
-
-        .strength-meter {
-            margin-top: 0.5rem;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .strength-bar {
-            height: 100%;
-            transition: all 0.3s ease;
-            border-radius: 2px;
-        }
-
-        .strength-weak { background: #ff6b6b; width: 25%; }
-        .strength-fair { background: #ffd93d; width: 50%; }
-        .strength-good { background: #6bcf7f; width: 75%; }
-        .strength-strong { background: #51cf66; width: 100%; }
-
-        .password-requirements {
-            margin-top: 0.5rem;
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .requirement {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .requirement.met {
-            color: var(--success-color);
-        }
-
-        .requirement i {
-            width: 12px;
-            font-size: 0.7rem;
         }
 
         @media (max-width: 768px) {
