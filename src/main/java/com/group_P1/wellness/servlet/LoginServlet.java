@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.sql.*;
 
 public class LoginServlet extends HttpServlet {
+    
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -45,5 +46,7 @@ public class LoginServlet extends HttpServlet {
             e.printStackTrace();
             response.sendRedirect("login.jsp?error=exception");
         }
+        
     }
+    
 }
