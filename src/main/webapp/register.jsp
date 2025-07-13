@@ -1,5 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -23,42 +21,42 @@
                 <div class="form-group">
                     <label for="firstName">First Name</label>
                     <i class="fas fa-user input-icon"></i>
-                    <input type="text" id="firstName" name="firstName" required>
+                    <input type="text" id="firstName" name="firstName" required/>
                     <div class="validation-message" id="firstNameError"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="lastName">Last Name</label>
                     <i class="fas fa-user input-icon"></i>
-                    <input type="text" id="lastName" name="lastName" required>
+                    <input type="text" id="lastName" name="lastName" required/>
                     <div class="validation-message" id="lastNameError"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="username">Username</label>
                     <i class="fas fa-at input-icon"></i>
-                    <input type="text" id="username" name="username" required>
+                    <input type="text" id="username" name="username" required/>
                     <div class="validation-message" id="usernameError"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email Address</label>
                     <i class="fas fa-envelope input-icon"></i>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="email" name="email" required/>
                     <div class="validation-message" id="emailError"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="phone">Phone Number</label>
                     <i class="fas fa-phone input-icon"></i>
-                    <input type="tel" id="phone" name="phone" placeholder="(123) 456-7890" required>
+                    <input type="tel" id="phone" name="phone" placeholder="(123) 456-7890" required/>
                     <div class="validation-message" id="phoneError"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="password">Password</label>
                     <i class="fas fa-lock input-icon"></i>
-                    <input type="password" id="password" name="password" required>
+                    <input type="password" id="password" name="password" required/>
                     <i class="fas fa-eye password-toggle" id="passwordToggle"></i>
                     <div class="validation-message" id="passwordError"></div>
                 </div>
@@ -66,7 +64,7 @@
                 <div class="form-group">
                     <label for="confirmPassword">Confirm Password</label>
                     <i class="fas fa-lock input-icon"></i>
-                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required/>
                     <i class="fas fa-eye password-toggle" id="confirmPasswordToggle"></i>
                     <div class="validation-message" id="confirmPasswordError"></div>
                 </div>
@@ -80,6 +78,5 @@
                 Already have an account? <a href="login.jsp">Sign In</a>
             </div>
         </div>
-
 </body>
 </html>
