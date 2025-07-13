@@ -6,6 +6,10 @@
         <servlet-class>com.group_P1.wellness.servlet.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
+  <servlet-name>ScheduleBookingServlet</servlet-name>
+  <servlet-class>com.group_P1.wellness.servlet.ScheduleBookingServlet</servlet-class>
+</servlet>
+    <servlet>
         <servlet-name>RegistrationServlet</servlet-name>
         <servlet-class>com.group_P1.wellness.servlet.RegistrationServlet</servlet-class>
     </servlet>
@@ -25,4 +29,8 @@
         <servlet-name>RegistrationServlet</servlet-name>
         <url-pattern>/RegistrationServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+  <servlet-name>ScheduleBookingServlet</servlet-name>
+  <url-pattern>/ScheduleBookingServlet</url-pattern>
+</servlet-mapping>
 </web-app>
