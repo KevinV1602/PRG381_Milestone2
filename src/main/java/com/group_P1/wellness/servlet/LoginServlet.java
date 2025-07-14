@@ -21,7 +21,7 @@ public class LoginServlet extends HttpServlet {
             // Connect to DB
             Class.forName("org.postgresql.Driver");
             Connection conn = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5353/PRG381_wellness", "postgres", "Ven06246"
+                    "jdbc:postgresql://localhost:5432/PRG381_wellness", "postgres", "Ven06246"
             );
 
             // Hash password input
