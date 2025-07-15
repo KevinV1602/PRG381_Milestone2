@@ -11,6 +11,7 @@ import java.util.Base64;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -21,15 +22,17 @@ public class LoginServlet extends HttpServlet {
             // Connect to DB
             Class.forName("org.postgresql.Driver");
             Connection conn = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/PRG381_wellness", "postgres", "Ven06246"
+                    "jdbc:postgresql://localhost:5353/PRG381_wellness", "postgres", "Ven06246"
+                    
             );
-
+// Add this right after getting the connection
+                System.out.println("Database connection successful: " + conn.isValid(2));
             // Hash password input
             String hashedPassword = hashPassword(password);
 
             // Query with hashed password
             PreparedStatement ps = conn.prepareStatement(
-                    "SELECT * FROM students WHERE username = ? AND password = ?"
+                    "SELECT * FROM students WHERE username = ? AND password_hash = ?"
             );
             ps.setString(1, username);
             ps.setString(2, hashedPassword);
@@ -52,7 +55,6 @@ public class LoginServlet extends HttpServlet {
             conn.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
             request.setAttribute("error", "Something went wrong. Please try again.");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
