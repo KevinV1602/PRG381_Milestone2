@@ -1,2 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/http:/localhost:8080/PRG381_Milestone1"/>
+<Context>
+    <Resource name="jdbc/PRG381_wellness" 
+              auth="Container"
+              type="jakarta.sql.DataSource"
+              maxTotal="100"
+              maxIdle="30"
+              maxWaitMillis="10000"
+              username="postgres"
+              password="Ven06246"
+              driverClassName="org.postgresql.Driver"
+              url="jdbc:postgresql://localhost:5353/PRG381_wellness"/>
+</Context>

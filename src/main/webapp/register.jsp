@@ -17,7 +17,7 @@
                 <p>Create your account to get started</p>
             </div>
 
-            <form id="registrationForm" novalidate>
+            <form id="registrationForm" action="${pageContext.request.contextPath}/register" method="POST"novalidate>
                 <div class="form-group">
                     <label for="firstName">First Name</label>
                     <i class="fas fa-user input-icon"></i>
