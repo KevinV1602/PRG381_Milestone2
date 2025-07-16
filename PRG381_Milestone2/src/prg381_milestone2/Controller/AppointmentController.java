@@ -23,13 +23,19 @@ public class AppointmentController {
 
     public AppointmentController() {
         // Ensure the JDBC driver is loaded.
-        try {
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-        } catch (ClassNotFoundException e) {
-            System.err.println("Derby JDBC Driver not found. Make sure derby.jar is in your classpath.");
-            e.printStackTrace();
-            throw new RuntimeException("Failed to load Derby JDBC driver", e);
-        }
+      try {
+    // Explicitly load the driver
+    Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+    
+    // Add debug output
+    System.out.println("Derby JDBC driver loaded successfully");
+    
+    // Your connection code here...
+} catch (ClassNotFoundException e) {
+    System.err.println("Derby JDBC driver not found!");
+    e.printStackTrace();
+    throw new RuntimeException("Failed to load Derby JDBC driver", e);
+}
         createNewTable(); // Attempt to create the table when the controller is instantiated
     }
      private Connection connect() throws SQLException {
