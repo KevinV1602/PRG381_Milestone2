@@ -44,6 +44,36 @@ public class FeedbackController {
             }
         }
     }
+    public List<Feedback> searchFeedbackByStudentId(String studentId) throws SQLException {
+    List<Feedback> feedbackList = new ArrayList<>();
+    String sql = "SELECT * FROM FEEDBACK WHERE STUDENT_ID = ?";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, studentId);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Feedback fb = new Feedback();
+                fb.setId(rs.getInt("ID"));
+                fb.setStudentId(rs.getString("STUDENT_ID"));
+                fb.setCounselor(rs.getString("COUNSELOR"));
+                fb.setRating(rs.getInt("RATING"));
+                fb.setComments(rs.getString("COMMENTS"));
+                feedbackList.add(fb);
+            }
+        }
+    }
+    return feedbackList;
+}
+    public void updateFeedback(Feedback fb) throws SQLException {
+    String sql = "UPDATE FEEDBACK SET STUDENT_ID=?, COUNSELOR=?, RATING=?, COMMENTS=? WHERE ID=?";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, fb.getStudentId());
+        ps.setString(2, fb.getCounselor());
+        ps.setInt(3, fb.getRating());
+        ps.setString(4, fb.getComments());
+        ps.setInt(5, fb.getId());
+        ps.executeUpdate();
+    }
+}
 
     public void submitFeedback(Feedback fb) throws SQLException {
         String sql = "INSERT INTO FEEDBACK (STUDENT_ID, COUNSELOR, RATING, COMMENTS) VALUES (?, ?, ?, ?)";
@@ -55,6 +85,13 @@ public class FeedbackController {
             ps.executeUpdate();
         }
     }
+    public void deleteFeedback(int id) throws SQLException {
+    String sql = "DELETE FROM FEEDBACK WHERE ID = ?";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, id);
+        ps.executeUpdate();
+    }
+}
 
     public List<Feedback> getAllFeedback() throws SQLException {
         List<Feedback> feedbackList = new ArrayList<>();
