@@ -16,12 +16,17 @@ import javax.swing.JTable;
 
 import prg381_milestone2.Controller.AppointmentController;
 import prg381_milestone2.Model.Appointment;
+import prg381_milestone2.Controller.CounselorController;
+import prg381_milestone2.Model.Counselor;
 import javax.swing.JOptionPane;
 import java.sql.Date; 
 import java.util.List; 
 import javax.swing.table.DefaultTableModel; 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener; 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -31,7 +36,37 @@ public class Dashboard extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Dashboard.class.getName());
     
-     private final AppointmentController appointmentController;
+     private  AppointmentController appointmentController;
+     private  CounselorController counselorController;
+     
+     private void loadCounselorsIntoTable() {
+        DefaultTableModel model = (DefaultTableModel) tblCounselor.getModel();
+        model.setRowCount(0); // Clear existing rows
+
+        if (counselorController == null) {
+            logger.warning("CounselorController is null, cannot load counselors into table.");
+            return; // Exit if controller isn't initialized
+        }
+
+        try {
+            List<Counselor> counselors = counselorController.getAllCounselors();
+
+            for (Counselor c : counselors) {
+                model.addRow(new Object[]{
+                    c.getId(), // Assuming getId() returns the counselor_id
+                    c.getName(),
+                    c.getSpecialization(),
+                    c.getAvailability()
+                });
+            }
+        } catch (SQLException ex) { // Use SQLException for database errors
+            JOptionPane.showMessageDialog(this, "Error loading counselors: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.SEVERE, "Error loading counselors", ex);
+        } catch (Exception ex) { // Catch any other unexpected exceptions
+            JOptionPane.showMessageDialog(this, "An unexpected error occurred while loading counselors: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.SEVERE, "Unexpected error loading counselors", ex);
+        }
+    }
     private void loadAppointmentsIntoTable() {
         DefaultTableModel model = (DefaultTableModel) tblAppointment.getModel();
         model.setRowCount(0);
@@ -71,7 +106,14 @@ public class Dashboard extends javax.swing.JFrame {
         cmbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pending", "Confirmed", "Cancelled", "Completed" }));
         cmbTime.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Time", "09:00 AM", "10:00 AM", "11:00 AM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM" }));
 
-        
+        cmbCounselorAvailability.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {
+        "Select Availability",
+        "Monday - Friday (Full-time)",
+        "Monday, Wednesday, Friday (Part-time)",
+        "Tuesday, Thursday (Part-time)",
+        "Weekends Only",
+        "Flexible (by appointment)"
+    }));
         tblAppointment.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
             new String [] {
@@ -131,6 +173,36 @@ public class Dashboard extends javax.swing.JFrame {
         JScrollPane.setViewportView(tblAppointment);
         
         appointmentController = new AppointmentController();
+        
+         try {
+        counselorController = new CounselorController();
+        logger.info("CounselorController initialized successfully.");
+    } catch (SQLException e) {
+        // Log the full stack trace to help diagnose the Derby issue
+        logger.log(Level.SEVERE, "Failed to initialize Counselor Controller due to SQL error. Counselor features disabled.", e);
+        JOptionPane.showMessageDialog(this, "Failed to initialize Counselor Controller (Database Error): " + e.getMessage() + "\nCounselor features might be unavailable.", "Database Error", JOptionPane.ERROR_MESSAGE);
+        counselorController = null; // Explicitly set to null if initialization fails
+        // Optionally disable UI elements related to counselors if initialization fails
+        if (btnAddCounselor != null) btnAddCounselor.setEnabled(false);
+        if (btnUpdateCounselor != null) btnUpdateCounselor.setEnabled(false);
+        if (btnDeleteCounselor != null) btnDeleteCounselor.setEnabled(false);
+        if (txtCounselorName != null) txtCounselorName.setEnabled(false);
+        if (txtCounselorSpecialization != null) txtCounselorSpecialization.setEnabled(false);
+        if (cmbCounselorAvailability != null) cmbCounselorAvailability.setEnabled(false);
+        if (tblCounselor != null) tblCounselor.setEnabled(false);
+    } catch (Exception e) { // Catch any other unexpected exceptions
+        logger.log(Level.SEVERE, "An unexpected error occurred during Counselor Controller initialization. Counselor features disabled.", e);
+        JOptionPane.showMessageDialog(this, "An unexpected error occurred during Counselor Controller initialization: " + e.getMessage() + "\nCounselor features might be unavailable.", "Error", JOptionPane.ERROR_MESSAGE);
+        counselorController = null;
+        // Disable UI elements as above
+        if (btnAddCounselor != null) btnAddCounselor.setEnabled(false);
+        if (btnUpdateCounselor != null) btnUpdateCounselor.setEnabled(false);
+        if (btnDeleteCounselor != null) btnDeleteCounselor.setEnabled(false);
+        if (txtCounselorName != null) txtCounselorName.setEnabled(false);
+        if (txtCounselorSpecialization != null) txtCounselorSpecialization.setEnabled(false);
+        if (cmbCounselorAvailability != null) cmbCounselorAvailability.setEnabled(false);
+        if (tblCounselor != null) tblCounselor.setEnabled(false);
+    }
         
         if (cmbStatus.getItemCount() > 0) {
             cmbStatus.setSelectedItem("Pending");
