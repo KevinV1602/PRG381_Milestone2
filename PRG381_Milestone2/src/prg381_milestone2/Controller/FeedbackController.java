@@ -63,7 +63,17 @@ public class FeedbackController {
     }
     return feedbackList;
 }
-
+    public void updateFeedback(Feedback fb) throws SQLException {
+    String sql = "UPDATE FEEDBACK SET STUDENT_ID=?, COUNSELOR=?, RATING=?, COMMENTS=? WHERE ID=?";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, fb.getStudentId());
+        ps.setString(2, fb.getCounselor());
+        ps.setInt(3, fb.getRating());
+        ps.setString(4, fb.getComments());
+        ps.setInt(5, fb.getId());
+        ps.executeUpdate();
+    }
+}
 
     public void submitFeedback(Feedback fb) throws SQLException {
         String sql = "INSERT INTO FEEDBACK (STUDENT_ID, COUNSELOR, RATING, COMMENTS) VALUES (?, ?, ?, ?)";
@@ -75,6 +85,13 @@ public class FeedbackController {
             ps.executeUpdate();
         }
     }
+    public void deleteFeedback(int id) throws SQLException {
+    String sql = "DELETE FROM FEEDBACK WHERE ID = ?";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, id);
+        ps.executeUpdate();
+    }
+}
 
     public List<Feedback> getAllFeedback() throws SQLException {
         List<Feedback> feedbackList = new ArrayList<>();
