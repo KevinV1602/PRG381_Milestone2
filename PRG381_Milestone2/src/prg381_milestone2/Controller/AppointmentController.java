@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package prg381_milestone2.Controller;
 
 import prg381_milestone2.Model.Appointment;
@@ -14,52 +10,49 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Date;
-/**
- *
- * @author Client
- */
+
 public class AppointmentController {
+    // Changed: JDBC_URL now reflects the database for Appointments
     private static final String JDBC_URL = "jdbc:derby:wellnessDB;create=true";
+    // Changed: DRIVER constant added for clarity, mirroring DBconnection class
+    private static final String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
 
     public AppointmentController() {
-        // Ensure the JDBC driver is loaded.
-      try {
-    // Explicitly load the driver
-    Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-    
-    // Add debug output
-    System.out.println("Derby JDBC driver loaded successfully");
-    
-    // Your connection code here...
-} catch (ClassNotFoundException e) {
-    System.err.println("Derby JDBC driver not found!");
-    e.printStackTrace();
-    throw new RuntimeException("Failed to load Derby JDBC driver", e);
-}
-        createNewTable(); // Attempt to create the table when the controller is instantiated
+        // Changed: Driver loading directly within the constructor, mirroring DBconnection's connect method
+        try {
+            Class.forName(DRIVER);
+        } catch (ClassNotFoundException e) {
+            System.err.println("Derby JDBC Driver not found. Make sure derby.jar is in your classpath.");
+            e.printStackTrace();
+            throw new RuntimeException("Failed to load Derby JDBC driver", e);
+        }
+        createNewTable();
     }
-     private Connection connect() throws SQLException {
+
+    // Changed: This method now encapsulates getting a new connection for each operation,
+    // directly mirroring the connection style from DBconnection's internal logic.
+    private Connection connect() throws SQLException {
+        // Changed: Directly return a new connection
         return DriverManager.getConnection(JDBC_URL);
     }
-     
-     private void createNewTable() {
+
+    private void createNewTable() {
         String sql = "CREATE TABLE appointments (\n"
-                   + "    id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),\n"
-                   + "    student_id VARCHAR(50) NOT NULL,\n"
-                   + "    student_name VARCHAR(100),\n"
-                   + "    counselor_name VARCHAR(100) NOT NULL,\n"
-                   + "    appointment_date DATE NOT NULL,\n"
-                   + "    appointment_time VARCHAR(50) NOT NULL,\n"
-                   + "    status VARCHAR(50) NOT NULL,\n"
-                   + "    PRIMARY KEY (id)\n"
-                   + ");";
+                + "    id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),\n"
+                + "    student_id VARCHAR(50) NOT NULL,\n"
+                + "    student_name VARCHAR(100),\n"
+                + "    counselor_name VARCHAR(100) NOT NULL,\n"
+                + "    appointment_date DATE NOT NULL,\n"
+                + "    appointment_time VARCHAR(50) NOT NULL,\n"
+                + "    status VARCHAR(50) NOT NULL,\n"
+                + "    PRIMARY KEY (id)\n"
+                + ")";
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
             System.out.println("Appointments table checked/created successfully.");
         } catch (SQLException e) {
-            // X0Y32 is Derby's SQLState for "table already exists"
             if (e.getSQLState().equals("X0Y32")) {
                 System.out.println("Appointments table already exists.");
             } else {
@@ -68,8 +61,8 @@ public class AppointmentController {
             }
         }
     }
-     
-      public void bookAppointment(Appointment appointment) throws SQLException {
+
+    public void bookAppointment(Appointment appointment) throws SQLException {
         String sql = "INSERT INTO appointments(student_id, student_name, counselor_name, appointment_date, appointment_time, status) VALUES(?,?,?,?,?,?)";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -82,8 +75,8 @@ public class AppointmentController {
             pstmt.executeUpdate();
         }
     }
-     
-      public List<Appointment> getAllAppointments() throws SQLException {
+
+    public List<Appointment> getAllAppointments() throws SQLException {
         List<Appointment> appointments = new ArrayList<>();
         String sql = "SELECT id, student_id, student_name, counselor_name, appointment_date, appointment_time, status FROM appointments";
         try (Connection conn = connect();
@@ -92,41 +85,70 @@ public class AppointmentController {
 
             while (rs.next()) {
                 appointments.add(new Appointment(
-                    rs.getInt("id"),
-                    rs.getString("student_id"),
-                    rs.getString("student_name"),
-                    rs.getString("counselor_name"),
-                    rs.getDate("appointment_date"),
-                    rs.getString("appointment_time"),
-                    rs.getString("status")
+                        rs.getInt("id"),
+                        rs.getString("student_id"),
+                        rs.getString("student_name"),
+                        rs.getString("counselor_name"),
+                        rs.getDate("appointment_date"),
+                        rs.getString("appointment_time"),
+                        rs.getString("status")
                 ));
             }
         }
         return appointments;
     }
-      public List<Appointment> searchAppointmentsByStudentId(String studentId) throws SQLException {
+
+    public List<Appointment> searchAppointmentsByStudentId(String studentId) throws SQLException {
         List<Appointment> appointments = new ArrayList<>();
         String sql = "SELECT id, student_id, student_name, counselor_name, appointment_date, appointment_time, status FROM appointments WHERE LOWER(student_id) LIKE LOWER(?)";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, "%" + studentId + "%"); // Wildcards for LIKE search
+            pstmt.setString(1, "%" + studentId + "%");
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
                 appointments.add(new Appointment(
-                    rs.getInt("id"),
-                    rs.getString("student_id"),
-                    rs.getString("student_name"),
-                    rs.getString("counselor_name"),
-                    rs.getDate("appointment_date"),
-                    rs.getString("appointment_time"),
-                    rs.getString("status")
+                        rs.getInt("id"),
+                        rs.getString("student_id"),
+                        rs.getString("student_name"),
+                        rs.getString("counselor_name"),
+                        rs.getDate("appointment_date"),
+                        rs.getString("appointment_time"),
+                        rs.getString("status")
                 ));
             }
         }
         return appointments;
     }
-      public void updateAppointment(Appointment appointment) throws SQLException {
+    
+    public boolean isCounselorAvailable(String counselorName, Date appointmentDate, String appointmentTime) throws SQLException {
+        // SQL query to count existing appointments for the given counselor, date, and time
+        // where the status is either 'Pending' or 'Confirmed' (or whatever indicates a booked slot).
+        String sql = "SELECT COUNT(*) FROM appointments WHERE counselor_name = ? AND appointment_date = ? AND appointment_time = ? AND status IN ('Pending', 'Confirmed')";
+        
+        try (Connection conn = connect(); // Get a connection from your existing connect() method
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Set the parameters for the prepared statement
+            pstmt.setString(1, counselorName);
+            pstmt.setDate(2, appointmentDate);
+            pstmt.setString(3, appointmentTime);
+
+            // Execute the query and get the result set
+            try (ResultSet rs = pstmt.executeQuery()) {
+                // Check if there's a result and if the count is greater than 0
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // If count is > 0, means the slot is booked
+                }
+            }
+        }
+        // This line should ideally not be reached if the query executes successfully,
+        // but included for completeness in case of an unexpected empty result set.
+        return false;
+    }
+
+    
+    public void updateAppointment(Appointment appointment) throws SQLException {
         String sql = "UPDATE appointments SET student_id = ?, student_name = ?, counselor_name = ?, appointment_date = ?, appointment_time = ?, status = ? WHERE id = ?";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -143,6 +165,7 @@ public class AppointmentController {
             }
         }
     }
+
     public void cancelAppointment(int appointmentId) throws SQLException {
         String sql = "DELETE FROM appointments WHERE id = ?";
         try (Connection conn = connect();
@@ -154,14 +177,14 @@ public class AppointmentController {
             }
         }
     }
+
     public static void shutdown() {
         try {
             DriverManager.getConnection("jdbc:derby:;shutdown=true");
         } catch (SQLException se) {
-            // XJ015 is the SQLState for a successful shutdown in Derby
             if (se.getSQLState().equals("XJ015")) {
                 System.out.println("Derby database shut down normally.");
-            } else if (se.getSQLState().equals("08006")) { // Database not found / already shut down
+            } else if (se.getSQLState().equals("08006")) {
                 System.out.println("Derby database already shut down or not found.");
             } else {
                 System.err.println("Error shutting down Derby database: " + se.getMessage());
@@ -169,6 +192,4 @@ public class AppointmentController {
             }
         }
     }
-       
-     
 }
