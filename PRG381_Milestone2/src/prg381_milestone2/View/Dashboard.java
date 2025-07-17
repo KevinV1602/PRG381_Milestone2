@@ -909,6 +909,26 @@ public class Dashboard extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "All fields must be filled and valid selections made to update an appointment.", "Input Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            
+            java.util.Date today = new java.util.Date();
+        java.util.Calendar calSelectedDate = java.util.Calendar.getInstance();
+        calSelectedDate.setTime(utilDate);
+        calSelectedDate.set(java.util.Calendar.HOUR_OF_DAY, 0);
+        calSelectedDate.set(java.util.Calendar.MINUTE, 0);
+        calSelectedDate.set(java.util.Calendar.SECOND, 0);
+        calSelectedDate.set(java.util.Calendar.MILLISECOND, 0);
+
+        java.util.Calendar calToday = java.util.Calendar.getInstance();
+        calToday.setTime(today);
+        calToday.set(java.util.Calendar.HOUR_OF_DAY, 0);
+        calToday.set(java.util.Calendar.MINUTE, 0);
+        calToday.set(java.util.Calendar.SECOND, 0);
+        calToday.set(java.util.Calendar.MILLISECOND, 0);
+
+        if (calSelectedDate.before(calToday)) {
+            JOptionPane.showMessageDialog(this, "Appointment date cannot be in the past.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return; // Stop the update process if date is in the past
+        }
 
             java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
             // Pass null for studentName if not updated from input field
