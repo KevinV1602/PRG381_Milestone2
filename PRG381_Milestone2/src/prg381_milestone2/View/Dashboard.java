@@ -143,6 +143,7 @@ public class Dashboard extends javax.swing.JFrame {
                     int selectedRow = tblAppointment.getSelectedRow();
                     // Assuming column indices: 1=StudentID, 3=CounselorName, 4=Date, 5=Time, 6=Status
                     String selectedStudentId = (String) tblAppointment.getValueAt(selectedRow, 1);
+                    String selectedStudentName = (String) tblAppointment.getValueAt(selectedRow, 2);
                     String selectedCounselor = (String) tblAppointment.getValueAt(selectedRow, 3);
                     String selectedDateStr = (String) tblAppointment.getValueAt(selectedRow, 4);
                     String selectedTime = (String) tblAppointment.getValueAt(selectedRow, 5);
@@ -166,7 +167,7 @@ public class Dashboard extends javax.swing.JFrame {
                 } else if (tblAppointment.getSelectedRow() == -1) {
                     // Clear fields if no row is selected
                     txtStudentId.setText("");
-                    // jTextField2.setText(""); // Clear student name field if applicable
+                    txtStudentName.setText(""); 
                     cmbCounselor.setSelectedIndex(0);
                     dateChooserAppointment.setDate(null);
                     cmbTime.setSelectedIndex(0);
@@ -193,7 +194,7 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txtStudentId = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtStudentName = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         cmbCounselor = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
@@ -307,7 +308,7 @@ public class Dashboard extends javax.swing.JFrame {
                             .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField2)
+                            .addComponent(txtStudentName)
                             .addComponent(cmbStatus, 0, 100, Short.MAX_VALUE)
                             .addComponent(cmbTime, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(172, 172, 172))))
@@ -322,7 +323,7 @@ public class Dashboard extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(txtStudentId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtStudentName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -746,6 +747,7 @@ public class Dashboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
          String studentId = txtStudentId.getText().trim();
+         String studentName= txtStudentName.getText().trim();
         String counselorName = (String) cmbCounselor.getSelectedItem();
         java.util.Date utilDate = dateChooserAppointment.getDate();
         String time = (String) cmbTime.getSelectedItem();
@@ -775,7 +777,7 @@ public class Dashboard extends javax.swing.JFrame {
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
         
        try {
-            Appointment newAppointment = new Appointment(studentId, null, counselorName, sqlDate, time, status);
+            Appointment newAppointment = new Appointment(studentId, studentName, counselorName, sqlDate, time, status);
 
             appointmentController.bookAppointment(newAppointment);
 
@@ -838,7 +840,7 @@ public class Dashboard extends javax.swing.JFrame {
             // Get appointment ID from the selected table row (assuming it's in column 0)
             int appointmentId = (int) tblAppointment.getValueAt(selectedRow, 0);
             String studentId = txtStudentId.getText().trim();
-            // String studentName = jTextField2.getText().trim(); // If you're using a student name field for update
+            String studentName = txtStudentName.getText().trim(); 
             String counselorName = (String) cmbCounselor.getSelectedItem();
             java.util.Date utilDate = dateChooserAppointment.getDate();
             String time = (String) cmbTime.getSelectedItem();
@@ -851,7 +853,7 @@ public class Dashboard extends javax.swing.JFrame {
 
             java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
             // Pass null for studentName if not updated from input field
-            Appointment updatedAppointment = new Appointment(appointmentId, studentId, null, counselorName, sqlDate, time, status);
+            Appointment updatedAppointment = new Appointment(appointmentId, studentId, studentName, counselorName, sqlDate, time, status);
 
             appointmentController.updateAppointment(updatedAppointment);
             JOptionPane.showMessageDialog(this, "Appointment updated successfully!", "Update Confirmed", JOptionPane.INFORMATION_MESSAGE);
@@ -966,11 +968,11 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTable tblAppointment;
     private javax.swing.JTextField txtSearchID;
     private javax.swing.JTextField txtStudentId;
+    private javax.swing.JTextField txtStudentName;
     // End of variables declaration//GEN-END:variables
 
     private static class dateChooserAppointment {
