@@ -217,11 +217,19 @@ public class Dashboard extends javax.swing.JFrame {
         btnCancel = new javax.swing.JButton();
         btnRefresh = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        txtCounselorName = new javax.swing.JTextField();
+        txtCounselorSpecialization = new javax.swing.JTextField();
+        cmbCounselorAvailability = new javax.swing.JComboBox<>();
+        btnAddCounselor = new javax.swing.JButton();
+        btnUpdateCounselor = new javax.swing.JButton();
+        btnDeleteCounselor = new javax.swing.JButton();
+        jPanel10 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblCounselor = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
@@ -466,51 +474,137 @@ public class Dashboard extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("Appointment Management", jPanel1);
 
-        jButton1.setText("Add Counselor");
+        jLabel20.setText("Name:");
 
-        jButton2.setText("View All");
+        jLabel21.setText("Specialization:");
 
-        jButton3.setText("Edit Profile");
+        jLabel22.setText("Availibility:");
 
-        jLabel11.setText("Counselor Management");
+        cmbCounselorAvailability.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel12.setText("Manage counselor profiles and availability");
+        btnAddCounselor.setText("Add");
+        btnAddCounselor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddCounselorActionPerformed(evt);
+            }
+        });
+
+        btnUpdateCounselor.setText("Update");
+        btnUpdateCounselor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateCounselorActionPerformed(evt);
+            }
+        });
+
+        btnDeleteCounselor.setText("Delete");
+        btnDeleteCounselor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteCounselorActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(45, 45, 45)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addComponent(jLabel22)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cmbCounselorAvailability, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel20)
+                                    .addComponent(jLabel21))
+                                .addGap(77, 77, 77)
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtCounselorSpecialization, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCounselorName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(btnAddCounselor)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnUpdateCounselor)))
+                .addGap(67, 67, 67)
+                .addComponent(btnDeleteCounselor)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel20)
+                    .addComponent(txtCounselorName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel21)
+                    .addComponent(txtCounselorSpecialization, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel22)
+                    .addComponent(cmbCounselorAvailability, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAddCounselor)
+                    .addComponent(btnUpdateCounselor)
+                    .addComponent(btnDeleteCounselor))
+                .addContainerGap(62, Short.MAX_VALUE))
+        );
+
+        tblCounselor.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(tblCounselor);
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1000, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(48, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(162, 162, 162)
-                        .addComponent(jButton1)
-                        .addGap(123, 123, 123)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel11)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addComponent(jButton2)
-                                .addGap(142, 142, 142)
-                                .addComponent(jButton3))))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(353, 353, 353)
-                        .addComponent(jLabel12)))
-                .addContainerGap(739, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(424, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(jLabel11)
-                .addGap(43, 43, 43)
-                .addComponent(jLabel12)
-                .addGap(42, 42, 42)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addContainerGap(519, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(176, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Counselor Management", jPanel2);
@@ -777,6 +871,126 @@ public class Dashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbTimeActionPerformed
 
+    private void btnAddCounselorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCounselorActionPerformed
+        if (counselorController == null) {
+            JOptionPane.showMessageDialog(this, "Counselor features are currently unavailable due to a previous error.", "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Attempted to add counselor while counselorController is null.");
+            return;
+        }
+        try {
+            String name = txtCounselorName.getText().trim();
+            String specialization = txtCounselorSpecialization.getText().trim();
+            String availability = (String) cmbCounselorAvailability.getSelectedItem();
+
+            if (name.isEmpty() || specialization.isEmpty() || availability == null || availability.equals("Select Availability")) {
+                JOptionPane.showMessageDialog(this, "Please fill in all counselor fields.", "Validation Error", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // ID is 0 for new counselors, as it will be auto-generated by the database
+            Counselor newCounselor = new Counselor(0, name, specialization, availability);
+
+            counselorController.addCounselor(newCounselor);
+            JOptionPane.showMessageDialog(this, "Counselor added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            loadCounselorsIntoTable(); // Refresh the table
+            // Clear input fields after adding
+            txtCounselorName.setText("");
+            txtCounselorSpecialization.setText("");
+            cmbCounselorAvailability.setSelectedIndex(0); // Reset to "Select Availability"
+
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Validation Error", JOptionPane.WARNING_MESSAGE);
+            logger.log(Level.WARNING, "Validation error when adding counselor", e);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error adding counselor: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.SEVERE, "Error adding counselor to database", ex);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "An unexpected error occurred: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.SEVERE, "Unexpected error in btnAddCounsellorActionPerformed", ex);
+        }
+    }//GEN-LAST:event_btnAddCounselorActionPerformed
+
+    private void btnUpdateCounselorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateCounselorActionPerformed
+        if (counselorController == null) {
+            JOptionPane.showMessageDialog(this, "Counselor features are currently unavailable due to a previous error.", "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Attempted to update counselor while counselorController is null.");
+            return;
+        }
+        int selectedRow = tblCounselor.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a counselor to update.", "No Selection", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            // Get the ID from the selected row in the table (assuming ID is column 0)
+            int id = (int) tblCounselor.getValueAt(selectedRow, 0);
+            String name = txtCounselorName.getText().trim();
+            String specialization = txtCounselorSpecialization.getText().trim();
+            String availability = (String) cmbCounselorAvailability.getSelectedItem();
+
+            if (name.isEmpty() || specialization.isEmpty() || availability == null || availability.equals("Select Availability")) {
+                JOptionPane.showMessageDialog(this, "Please fill in all counselor fields.", "Validation Error", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            Counselor updatedCounselor = new Counselor(id, name, specialization, availability);
+
+            counselorController.updateCounselor(updatedCounselor);
+            JOptionPane.showMessageDialog(this, "Counselor updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            loadCounselorsIntoTable(); // Refresh the table
+            // Clear input fields after updating
+            txtCounselorName.setText("");
+            txtCounselorSpecialization.setText("");
+            cmbCounselorAvailability.setSelectedIndex(0);
+
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Validation Error", JOptionPane.WARNING_MESSAGE);
+            logger.log(Level.WARNING, "Validation error when updating counselor", e);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error updating counselor: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.SEVERE, "Error updating counselor in database", ex);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "An unexpected error occurred: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.SEVERE, "Unexpected error in btnUpdateCounsellorActionPerformed", ex);
+        }
+    }//GEN-LAST:event_btnUpdateCounselorActionPerformed
+
+    private void btnDeleteCounselorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteCounselorActionPerformed
+        if (counselorController == null) {
+            JOptionPane.showMessageDialog(this, "Counselor features are currently unavailable due to a previous error.", "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Attempted to delete counselor while counselorController is null.");
+            return;
+        }
+        int selectedRow = tblCounselor.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a counselor to delete.", "No Selection", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this counselor?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                // Get the ID from the selected row in the table
+                int id = (int) tblCounselor.getValueAt(selectedRow, 0);
+                counselorController.deleteCounselor(id);
+                JOptionPane.showMessageDialog(this, "Counselor deleted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                loadCounselorsIntoTable(); // Refresh the table
+                // Clear input fields after deleting
+                txtCounselorName.setText("");
+                txtCounselorSpecialization.setText("");
+                cmbCounselorAvailability.setSelectedIndex(0);
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "Error deleting counselor: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+                logger.log(Level.SEVERE, "Error deleting counselor from database", ex);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "An unexpected error occurred: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                logger.log(Level.SEVERE, "Unexpected error in btnDeleteCounsellorActionPerformed", ex);
+            }
+        }
+    }//GEN-LAST:event_btnDeleteCounselorActionPerformed
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
     String studentId = txtStudentId.getText().trim();
     String studentName = txtStudentName.getText().trim();
@@ -1000,22 +1214,23 @@ public class Dashboard extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane JScrollPane;
+    private javax.swing.JButton btnAddCounselor;
     private javax.swing.JButton btnBookAppointment;
     private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnDeleteCounselor;
     private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JButton btnUpdateCounselor;
     private javax.swing.JComboBox<String> cmbCounselor;
+    private javax.swing.JComboBox<String> cmbCounselorAvailability;
     private javax.swing.JComboBox<String> cmbStatus;
     private javax.swing.JComboBox<String> cmbTime;
     private com.toedter.calendar.JDateChooser dateChooserAppointment;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton7;
@@ -1024,8 +1239,6 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -1034,6 +1247,9 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1042,6 +1258,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -1049,8 +1266,10 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTable jTable1;
@@ -1058,6 +1277,9 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTable tblAppointment;
+    private javax.swing.JTable tblCounselor;
+    private javax.swing.JTextField txtCounselorName;
+    private javax.swing.JTextField txtCounselorSpecialization;
     private javax.swing.JTextField txtSearchID;
     private javax.swing.JTextField txtStudentId;
     private javax.swing.JTextField txtStudentName;
