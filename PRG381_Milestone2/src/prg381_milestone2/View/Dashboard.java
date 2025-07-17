@@ -114,17 +114,32 @@ public class Dashboard extends javax.swing.JFrame {
         "Weekends Only",
         "Flexible (by appointment)"
     }));
-        tblAppointment.setModel(new javax.swing.table.DefaultTableModel(
+        tblAppointment.setModel(new DefaultTableModel(
             new Object [][] {},
             new String [] {
                 "ID", "Student ID", "Student Name", "Counselor", "Date", "Time", "Status"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
-            };
-            @Override
+            @Override // Override annotation here
             public boolean isCellEditable(int rowIndex, int columnIndex) {
+                boolean[] canEdit = new boolean [] { // Declaration moved inside method
+                    false, false, false, false, false, false, false
+                };
+                return canEdit [columnIndex];
+            }
+        });
+
+        tblCounselor.setModel(new DefaultTableModel(
+            new Object [][] {},
+            new String [] {
+                "ID", "Name", "Specialization", "Availability"
+            }
+        ) {
+            @Override // Override annotation here
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                boolean[] canEdit = new boolean [] { // Declaration moved inside method
+                    false, false, false, false
+                };
                 return canEdit [columnIndex];
             }
         });
