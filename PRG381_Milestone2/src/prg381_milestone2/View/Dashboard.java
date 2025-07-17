@@ -141,7 +141,7 @@ public class Dashboard extends javax.swing.JFrame {
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting() && tblAppointment.getSelectedRow() != -1) {
                     int selectedRow = tblAppointment.getSelectedRow();
-                    // Assuming column indices: 1=StudentID, 3=CounselorName, 4=Date, 5=Time, 6=Status
+                    
                     String selectedStudentId = (String) tblAppointment.getValueAt(selectedRow, 1);
                     String selectedStudentName = (String) tblAppointment.getValueAt(selectedRow, 2);
                     String selectedCounselor = (String) tblAppointment.getValueAt(selectedRow, 3);
@@ -150,8 +150,8 @@ public class Dashboard extends javax.swing.JFrame {
                     String selectedStatus = (String) tblAppointment.getValueAt(selectedRow, 6);
 
                     txtStudentId.setText(selectedStudentId);
-                    // If you have a field for student name (jTextField2), uncomment this:
-                    // jTextField2.setText((String) tblAppointments.getValueAt(selectedRow, 2));
+                    
+                    txtStudentName.setText((String) tblAppointment.getValueAt(selectedRow, 2));
                     cmbCounselor.setSelectedItem(selectedCounselor);
 
                     try {
@@ -745,57 +745,92 @@ public class Dashboard extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-         String studentId = txtStudentId.getText().trim();
-         String studentName= txtStudentName.getText().trim();
-        String counselorName = (String) cmbCounselor.getSelectedItem();
-        java.util.Date utilDate = dateChooserAppointment.getDate();
-        String time = (String) cmbTime.getSelectedItem();
-        String status = (String) cmbStatus.getSelectedItem();
-        
-        if (studentId.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Student ID cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (counselorName == null || counselorName.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please select a Counselor.", "Input Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (utilDate == null) {
-            JOptionPane.showMessageDialog(this, "Please select an Appointment Date.", "Input Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (time == null || time.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please select an Appointment Time.", "Input Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (status == null || status.trim().isEmpty()) {
-             JOptionPane.showMessageDialog(this, "Please select an Appointment Status.", "Input Error", JOptionPane.ERROR_MESSAGE);
-             return;
-        }
-        
-        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-        
-       try {
-            Appointment newAppointment = new Appointment(studentId, studentName, counselorName, sqlDate, time, status);
+   private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+    String studentId = txtStudentId.getText().trim();
+    String studentName = txtStudentName.getText().trim();
+    String counselorName = (String) cmbCounselor.getSelectedItem();
+    java.util.Date utilDate = dateChooserAppointment.getDate();
+    String time = (String) cmbTime.getSelectedItem();
+    String status = (String) cmbStatus.getSelectedItem();
 
-            appointmentController.bookAppointment(newAppointment);
-
-            JOptionPane.showMessageDialog(this, "Appointment booked successfully!", "Booking Confirmed", JOptionPane.INFORMATION_MESSAGE);
-
-            txtStudentId.setText("");
-            cmbCounselor.setSelectedIndex(0);
-            dateChooserAppointment.setDate(null);
-            cmbTime.setSelectedIndex(0);
-            cmbStatus.setSelectedItem("Pending");
-
-            loadAppointmentsIntoTable();
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error booking appointment: " + ex.getMessage(), "Booking Error", JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace();
-        }  
+    if (studentId.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Student ID cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        return;
     }
+    if (studentName.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Student Name cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    if (counselorName == null || counselorName.trim().isEmpty() || "Select Counselor".equals(counselorName)) {
+        JOptionPane.showMessageDialog(this, "Please select a Counselor.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    if (utilDate == null) {
+        JOptionPane.showMessageDialog(this, "Please select an Appointment Date.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    java.util.Date today = new java.util.Date();
+    java.util.Calendar calSelectedDate = java.util.Calendar.getInstance();
+    calSelectedDate.setTime(utilDate);
+    calSelectedDate.set(java.util.Calendar.HOUR_OF_DAY, 0);
+    calSelectedDate.set(java.util.Calendar.MINUTE, 0);
+    calSelectedDate.set(java.util.Calendar.SECOND, 0);
+    calSelectedDate.set(java.util.Calendar.MILLISECOND, 0);
+
+    java.util.Calendar calToday = java.util.Calendar.getInstance();
+    calToday.setTime(today);
+    calToday.set(java.util.Calendar.HOUR_OF_DAY, 0);
+    calToday.set(java.util.Calendar.MINUTE, 0);
+    calToday.set(java.util.Calendar.SECOND, 0);
+    calToday.set(java.util.Calendar.MILLISECOND, 0);
+
+    if (calSelectedDate.before(calToday)) {
+        JOptionPane.showMessageDialog(this, "Appointment date cannot be in the past.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    if (time == null || time.trim().isEmpty() || "Select Time".equals(time)) {
+        JOptionPane.showMessageDialog(this, "Please select an Appointment Time.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    if (status == null || status.trim().isEmpty() || "Select Status".equals(status)) {
+        JOptionPane.showMessageDialog(this, "Please select an Appointment Status.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+
+    try {
+        if (appointmentController.isStudentIdTaken(studentId)) {
+            JOptionPane.showMessageDialog(this, "Student ID '" + studentId + "' already exists. A student can only have one studentID.", "Duplicate Student ID", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        if (appointmentController.isCounselorAvailable(counselorName, sqlDate, time)) {
+            JOptionPane.showMessageDialog(this, "Counselor '" + counselorName + "' is already booked at " + time + " on " + utilDate + ". Please choose another time or counselor.", "Booking Conflict", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Appointment newAppointment = new Appointment(studentId, studentName, counselorName, sqlDate, time, status);
+        appointmentController.bookAppointment(newAppointment);
+
+        JOptionPane.showMessageDialog(this, "Appointment booked successfully!", "Booking Confirmed", JOptionPane.INFORMATION_MESSAGE);
+
+        txtStudentId.setText("");
+        txtStudentName.setText("");
+        cmbCounselor.setSelectedIndex(0);
+        dateChooserAppointment.setDate(null);
+        cmbTime.setSelectedIndex(0);
+        cmbStatus.setSelectedItem("Pending");
+
+        loadAppointmentsIntoTable();
+
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this, "Error booking appointment: " + ex.getMessage(), "Booking Error", JOptionPane.ERROR_MESSAGE);
+        ex.printStackTrace();
+    }
+}
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         String searchStudentId = txtSearchID.getText().trim(); // Assuming jTextField3 is your search input field
         DefaultTableModel model = (DefaultTableModel) tblAppointment.getModel();

@@ -12,13 +12,10 @@ import java.util.List;
 import java.sql.Date;
 
 public class AppointmentController {
-    // Changed: JDBC_URL now reflects the database for Appointments
     private static final String JDBC_URL = "jdbc:derby:wellnessDB;create=true";
-    // Changed: DRIVER constant added for clarity, mirroring DBconnection class
     private static final String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
 
     public AppointmentController() {
-        // Changed: Driver loading directly within the constructor, mirroring DBconnection's connect method
         try {
             Class.forName(DRIVER);
         } catch (ClassNotFoundException e) {
@@ -29,10 +26,7 @@ public class AppointmentController {
         createNewTable();
     }
 
-    // Changed: This method now encapsulates getting a new connection for each operation,
-    // directly mirroring the connection style from DBconnection's internal logic.
     private Connection connect() throws SQLException {
-        // Changed: Directly return a new connection
         return DriverManager.getConnection(JDBC_URL);
     }
 
@@ -120,34 +114,42 @@ public class AppointmentController {
         }
         return appointments;
     }
-    
-    public boolean isCounselorAvailable(String counselorName, Date appointmentDate, String appointmentTime) throws SQLException {
-        // SQL query to count existing appointments for the given counselor, date, and time
-        // where the status is either 'Pending' or 'Confirmed' (or whatever indicates a booked slot).
-        String sql = "SELECT COUNT(*) FROM appointments WHERE counselor_name = ? AND appointment_date = ? AND appointment_time = ? AND status IN ('Pending', 'Confirmed')";
-        
-        try (Connection conn = connect(); // Get a connection from your existing connect() method
+
+    public boolean isStudentIdTaken(String studentId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM appointments WHERE student_id = ?";
+        try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            // Set the parameters for the prepared statement
+            pstmt.setString(1, studentId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        }
+        return false;
+    }
+    
+    public boolean isCounselorAvailable(String counselorName, Date appointmentDate, String appointmentTime) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM appointments WHERE counselor_name = ? AND appointment_date = ? AND appointment_time = ? AND status IN ('Pending', 'Confirmed')";
+        
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setString(1, counselorName);
             pstmt.setDate(2, appointmentDate);
             pstmt.setString(3, appointmentTime);
 
-            // Execute the query and get the result set
             try (ResultSet rs = pstmt.executeQuery()) {
-                // Check if there's a result and if the count is greater than 0
                 if (rs.next()) {
-                    return rs.getInt(1) > 0; // If count is > 0, means the slot is booked
+                    return rs.getInt(1) > 0;
                 }
             }
         }
-        // This line should ideally not be reached if the query executes successfully,
-        // but included for completeness in case of an unexpected empty result set.
         return false;
     }
 
-    
     public void updateAppointment(Appointment appointment) throws SQLException {
         String sql = "UPDATE appointments SET student_id = ?, student_name = ?, counselor_name = ?, appointment_date = ?, appointment_time = ?, status = ? WHERE id = ?";
         try (Connection conn = connect();
