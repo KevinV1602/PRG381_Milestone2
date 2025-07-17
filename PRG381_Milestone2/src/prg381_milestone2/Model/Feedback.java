@@ -19,6 +19,13 @@ public class Feedback {
     // Constructors
     public Feedback() {}
     
+    public Feedback(String studentId, String counselor, int rating, String comments){
+    this.studentId = studentId;
+    this.counselor = counselor;
+    this.rating = rating;
+    this.comments = comments;
+    }
+    
     public Feedback(int id, String studentId, String counselor, int rating, String comments) {
     this.id = id;
     this.studentId = studentId;
