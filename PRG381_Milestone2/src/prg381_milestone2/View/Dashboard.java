@@ -275,16 +275,19 @@ public class Dashboard extends javax.swing.JFrame {
 
         jLabel4.setText("Counsellor:");
 
+        cmbCounselor.setBackground(new java.awt.Color(255, 168, 139));
         cmbCounselor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel5.setText("Status:");
 
+        cmbStatus.setBackground(new java.awt.Color(255, 168, 139));
         cmbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel6.setText("Date:");
 
         jLabel7.setText("Time:");
 
+        cmbTime.setBackground(new java.awt.Color(255, 168, 139));
         cmbTime.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbTime.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -292,6 +295,7 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
+        btnBookAppointment.setBackground(new java.awt.Color(255, 168, 139));
         btnBookAppointment.setText("Book Appointment");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -382,12 +386,16 @@ public class Dashboard extends javax.swing.JFrame {
         ));
         JScrollPane.setViewportView(tblAppointment);
 
+        btnSearch.setBackground(new java.awt.Color(255, 168, 139));
         btnSearch.setText("Search");
 
+        btnUpdate.setBackground(new java.awt.Color(255, 168, 139));
         btnUpdate.setText("Update");
 
+        btnCancel.setBackground(new java.awt.Color(255, 168, 139));
         btnCancel.setText("Cancel");
 
+        btnRefresh.setBackground(new java.awt.Color(255, 168, 139));
         btnRefresh.setText("Refresh");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);

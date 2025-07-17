@@ -1,6 +1,6 @@
-package src.prg381_milestone2.Controller;
+package prg381_milestone2.Controller;
 
-import src.prg381_milestone2.Model.Counselor;
+import prg381_milestone2.Model.Counselor;
 import java.sql.*;
 import java.util.*;
 

@@ -1,4 +1,4 @@
-package src.prg381_milestone2.Model;
+package prg381_milestone2.Model;
 public class Counselor {
     private int id;
     private String name;
