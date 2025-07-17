@@ -27,6 +27,8 @@ import javax.swing.event.ListSelectionListener;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import prg381_milestone2.Controller.FeedbackController;
+import prg381_milestone2.Model.Feedback;
 
 /**
  *
@@ -90,6 +92,28 @@ public class Dashboard extends javax.swing.JFrame {
             ex.printStackTrace();
         }
     }
+    
+    private void loadAllFeedback() {
+    try {
+        FeedbackController controller = new FeedbackController();
+        List<Feedback> list = controller.getAllFeedback();
+        DefaultTableModel model = (DefaultTableModel) tblStudents.getModel();
+        model.setRowCount(0); // Clear existing rows
+
+        for (Feedback fb : list) {
+            model.addRow(new Object[]{
+                fb.getStudentId(),
+                fb.getCounselor(),
+                fb.getRating(),
+                fb.getComments()
+            });
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Could not load feedback.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
 
     /**
      * Creates new form Dashboard
@@ -101,6 +125,131 @@ public class Dashboard extends javax.swing.JFrame {
         setSize(1050, 700);     
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        
+        btnSubmitFeedback.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+        String studentId = txtStudentID.getText().trim();
+        String counselor = cmbCounselor1.getSelectedItem().toString();
+        int rating = (int) spnRating.getValue();
+        String comments = txtComments.getText().trim();
+
+        if (studentId.isEmpty() || counselor.isEmpty() || comments.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please fill in all fields.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Feedback feedback = new Feedback(studentId, counselor, rating, comments);
+        FeedbackController controller = new FeedbackController();
+
+        try {
+            controller.submitFeedback(feedback);
+            JOptionPane.showMessageDialog(null, "Feedback submitted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            // Clear fields
+            txtStudentID.setText("");
+            txtComments.setText("");
+            spnRating.setValue(1);
+            cmbCounselor1.setSelectedIndex(0);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Failed to submit feedback.\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+});
+        btnViewAll.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+        loadAllFeedback();
+    }
+});
+        btnSearchAction.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+        String studentId = txtSearchbyID.getText().trim();
+        if (studentId.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Enter a Student ID to search.", "Input Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            FeedbackController controller = new FeedbackController();
+            List<Feedback> list = controller.searchFeedbackByStudentId(studentId);
+            DefaultTableModel model = (DefaultTableModel) tblStudents.getModel();
+            model.setRowCount(0);
+
+            for (Feedback fb : list) {
+                model.addRow(new Object[]{
+                    fb.getStudentId(),
+                    fb.getCounselor(),
+                    fb.getRating(),
+                    fb.getComments()
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(Dashboard.this, "Search failed.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+});
+        
+        btnEditFeedback.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+        int selectedRow = tblStudents.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(null, "Please select a row to edit.");
+            return;
+        }
+
+        int id = (int) tblStudents.getValueAt(selectedRow, 0);
+        String studentId = txtStudentID.getText().trim();
+        String counselor = cmbCounselor1.getSelectedItem().toString();
+        int rating = (int) spnRating.getValue();
+        String comments = txtComments.getText().trim();
+
+        if (studentId.isEmpty() || comments.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Student ID and comments are required.");
+            return;
+        }
+
+        try {
+            FeedbackController controller = new FeedbackController();
+            controller.updateFeedback(new Feedback(studentId, counselor, rating, comments));
+            JOptionPane.showMessageDialog(null, "Feedback updated successfully.");
+            loadAllFeedback();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Update failed.");
+        }
+    }
+});
+        
+        btnDeleteFeedback.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        int selectedRow = tblStudents.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(null, "Please select a row to delete.");
+            return;
+        }
+
+        // Change: Get Student ID from the selected row
+        String studentId = tblStudents.getValueAt(selectedRow, 0).toString(); // Index 0 must be Student ID
+
+        int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this feedback?", "Confirm", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                FeedbackController controller = new FeedbackController();
+
+                // Change: Call the method that deletes by studentId
+                controller.deleteFeedback(studentId);
+
+                JOptionPane.showMessageDialog(null, "Feedback deleted.");
+                loadAllFeedback(); // Refresh the table
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Failed to delete feedback.");
+            }
+        }
+    }
+});
         
         cmbCounselor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Counselor", "John Doe", "Jane Smith", "Emily White", "Dr. Alex Lee" }));
         cmbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pending", "Confirmed", "Cancelled", "Completed" }));
@@ -322,28 +471,26 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        txtStudentID = new javax.swing.JTextField();
+        cmbCounselor1 = new javax.swing.JComboBox<>();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtComments = new javax.swing.JTextArea();
         jButton7 = new javax.swing.JButton();
-        jSpinner1 = new javax.swing.JSpinner();
+        spnRating = new javax.swing.JSpinner();
         jButton12 = new javax.swing.JButton();
-        jButton13 = new javax.swing.JButton();
+        btnSubmitFeedback = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
-        jTextField3 = new javax.swing.JTextField();
+        btnSearchAction = new javax.swing.JButton();
+        btnViewAll = new javax.swing.JButton();
+        txtSearchbyID = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
+        tblStudents = new javax.swing.JTable();
+        btnEditFeedback = new javax.swing.JButton();
+        btnDeleteFeedback = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
 
@@ -709,25 +856,25 @@ public class Dashboard extends javax.swing.JFrame {
 
         jLabel17.setText("Counselor:");
 
-        jTextField1.setActionCommand("<Not Set>");
+        txtStudentID.setActionCommand("<Not Set>");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbCounselor1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel13.setText("Rating:");
 
         jLabel14.setText("Comments");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtComments.setColumns(20);
+        txtComments.setRows(5);
+        jScrollPane1.setViewportView(txtComments);
 
         jButton7.setText("Submit Feedback");
 
-        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(1, 1, 5, 1));
+        spnRating.setModel(new javax.swing.SpinnerNumberModel(1, 1, 5, 1));
 
         jButton12.setText("jButton12");
 
-        jButton13.setText("Submit Feedback");
+        btnSubmitFeedback.setText("Submit Feedback");
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -748,9 +895,9 @@ public class Dashboard extends javax.swing.JFrame {
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGap(37, 37, 37)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1)
-                            .addComponent(jComboBox1, 0, 126, Short.MAX_VALUE)
-                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtStudentID)
+                            .addComponent(cmbCounselor1, 0, 126, Short.MAX_VALUE)
+                            .addComponent(spnRating, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 758, Short.MAX_VALUE)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -764,7 +911,7 @@ public class Dashboard extends javax.swing.JFrame {
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGap(584, 584, 584)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSubmitFeedback, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -775,20 +922,20 @@ public class Dashboard extends javax.swing.JFrame {
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGap(43, 43, 43)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtStudentID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(21, 21, 21)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbCounselor1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel7Layout.createSequentialGroup()
                                 .addGap(2, 2, 2)
                                 .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel13)
-                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(spnRating, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(13, 13, 13)
-                        .addComponent(jButton13)
+                        .addComponent(btnSubmitFeedback)
                         .addGap(18, 18, 18)
                         .addComponent(jButton12))
                     .addGroup(jPanel7Layout.createSequentialGroup()
@@ -807,11 +954,11 @@ public class Dashboard extends javax.swing.JFrame {
 
         jLabel19.setText("Search by Student ID:");
 
-        jButton8.setText("Search");
+        btnSearchAction.setText("Search");
 
-        jButton9.setText("View All");
+        btnViewAll.setText("View All");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblStudents.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -822,15 +969,11 @@ public class Dashboard extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable1);
+        jScrollPane2.setViewportView(tblStudents);
 
-        jButton4.setText("Edit");
+        btnEditFeedback.setText("Edit");
 
-        jButton5.setText("Delete");
-
-        jButton10.setText("Edit");
-
-        jButton11.setText("Delete");
+        btnDeleteFeedback.setText("Delete");
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -845,24 +988,19 @@ public class Dashboard extends javax.swing.JFrame {
                             .addGroup(jPanel8Layout.createSequentialGroup()
                                 .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtSearchbyID, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(83, 83, 83)
-                                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnSearchAction, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(33, 33, 33)
-                                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(btnViewAll, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1323, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton11, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnEditFeedback, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnDeleteFeedback, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -872,23 +1010,19 @@ public class Dashboard extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton9)
-                        .addComponent(jButton8))
+                        .addComponent(btnViewAll)
+                        .addComponent(btnSearchAction))
                     .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel19)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtSearchbyID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(jButton10)
+                        .addComponent(btnEditFeedback)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton11)))
-                .addGap(57, 57, 57)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton5)
-                    .addComponent(jButton4))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnDeleteFeedback)))
+                .addContainerGap(110, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -1311,25 +1445,23 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JButton btnBookAppointment;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnDeleteCounselor;
+    private javax.swing.JButton btnDeleteFeedback;
+    private javax.swing.JButton btnEditFeedback;
     private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnSearch;
+    private javax.swing.JButton btnSearchAction;
+    private javax.swing.JButton btnSubmitFeedback;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JButton btnUpdateCounselor;
+    private javax.swing.JButton btnViewAll;
     private javax.swing.JComboBox<String> cmbCounselor;
+    private javax.swing.JComboBox<String> cmbCounselor1;
     private javax.swing.JComboBox<String> cmbCounselorAvailability;
     private javax.swing.JComboBox<String> cmbStatus;
     private javax.swing.JComboBox<String> cmbTime;
     private com.toedter.calendar.JDateChooser dateChooserAppointment;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel13;
@@ -1363,17 +1495,17 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JSpinner spnRating;
     private javax.swing.JTable tblAppointment;
     private javax.swing.JTable tblCounselor;
+    private javax.swing.JTable tblStudents;
+    private javax.swing.JTextArea txtComments;
     private javax.swing.JTextField txtCounselorName;
     private javax.swing.JTextField txtCounselorSpecialization;
     private javax.swing.JTextField txtSearchID;
+    private javax.swing.JTextField txtSearchbyID;
+    private javax.swing.JTextField txtStudentID;
     private javax.swing.JTextField txtStudentId;
     private javax.swing.JTextField txtStudentName;
     // End of variables declaration//GEN-END:variables
