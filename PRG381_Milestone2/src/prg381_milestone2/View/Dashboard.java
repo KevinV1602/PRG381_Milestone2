@@ -92,7 +92,7 @@ public class Dashboard extends javax.swing.JFrame {
         btnBookAppointment.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnBookAppointmentActionPerformed(evt);
             }
         });
 
@@ -100,7 +100,7 @@ public class Dashboard extends javax.swing.JFrame {
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnUpdateActionPerformed(evt);
             }
         });
 
@@ -108,7 +108,7 @@ public class Dashboard extends javax.swing.JFrame {
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnSearchActionPerformed(evt);
             }
         });
 
@@ -116,7 +116,7 @@ public class Dashboard extends javax.swing.JFrame {
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnCancelActionPerformed(evt);
             }
         });
 
@@ -124,7 +124,7 @@ public class Dashboard extends javax.swing.JFrame {
         btnRefresh.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                btnSearchActionPerformed(evt);
             }
         });
         
@@ -293,6 +293,11 @@ public class Dashboard extends javax.swing.JFrame {
         });
 
         btnBookAppointment.setText("Book Appointment");
+        btnBookAppointment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBookAppointmentActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -370,6 +375,11 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel9.setText("Search by StudentID:");
 
         btnSearch.setText("Search");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
         tblAppointment.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -385,10 +395,25 @@ public class Dashboard extends javax.swing.JFrame {
         JScrollPane.setViewportView(tblAppointment);
 
         btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         btnCancel.setText("Cancel");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
         btnRefresh.setText("Refresh");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -766,8 +791,9 @@ public class Dashboard extends javax.swing.JFrame {
     private void cmbTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTimeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbTimeActionPerformed
-   private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-    String studentId = txtStudentId.getText().trim();
+
+    private void btnBookAppointmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBookAppointmentActionPerformed
+        String studentId = txtStudentId.getText().trim();
     String studentName = txtStudentName.getText().trim();
     String counselorName = (String) cmbCounselor.getSelectedItem();
     java.util.Date utilDate = dateChooserAppointment.getDate();
@@ -851,8 +877,9 @@ public class Dashboard extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Error booking appointment: " + ex.getMessage(), "Booking Error", JOptionPane.ERROR_MESSAGE);
         ex.printStackTrace();
     }
-}
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+    }//GEN-LAST:event_btnBookAppointmentActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         String searchStudentId = txtSearchID.getText().trim(); // Assuming jTextField3 is your search input field
         DefaultTableModel model = (DefaultTableModel) tblAppointment.getModel();
         model.setRowCount(0); // Clear existing rows
@@ -884,8 +911,36 @@ public class Dashboard extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error searching appointments: " + ex.getMessage(), "Search Error", JOptionPane.ERROR_MESSAGE);
             logger.log(java.util.logging.Level.SEVERE, "Error searching appointments", ex);
         }
-    }     
-      private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        int selectedRow = tblAppointment.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select an appointment to cancel.", "No Selection", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to cancel this appointment?", "Confirm Cancellation", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                // Get appointment ID from the selected table row (assuming it's in column 0)
+                int appointmentId = (int) tblAppointment.getValueAt(selectedRow, 0);
+                appointmentController.cancelAppointment(appointmentId);
+                JOptionPane.showMessageDialog(this, "Appointment cancelled successfully!", "Cancellation Confirmed", JOptionPane.INFORMATION_MESSAGE);
+                loadAppointmentsIntoTable(); // Refresh table
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error cancelling appointment: " + ex.getMessage(), "Cancellation Error", JOptionPane.ERROR_MESSAGE);
+                logger.log(java.util.logging.Level.SEVERE, "Error cancelling appointment", ex);
+            }
+        }
+    }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        loadAppointmentsIntoTable(); // Reload all appointments
+        JOptionPane.showMessageDialog(this, "Appointment list refreshed.", "Refresh", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_btnRefreshActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         int selectedRow = tblAppointment.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Please select an appointment to update.", "No Selection", JOptionPane.WARNING_MESSAGE);
@@ -918,32 +973,9 @@ public class Dashboard extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error updating appointment: " + ex.getMessage(), "Update Error", JOptionPane.ERROR_MESSAGE);
             logger.log(java.util.logging.Level.SEVERE, "Error updating appointment", ex);
         }
-    } 
-      private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        int selectedRow = tblAppointment.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select an appointment to cancel.", "No Selection", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to cancel this appointment?", "Confirm Cancellation", JOptionPane.YES_NO_OPTION);
-        if (confirm == JOptionPane.YES_OPTION) {
-            try {
-                // Get appointment ID from the selected table row (assuming it's in column 0)
-                int appointmentId = (int) tblAppointment.getValueAt(selectedRow, 0);
-                appointmentController.cancelAppointment(appointmentId);
-                JOptionPane.showMessageDialog(this, "Appointment cancelled successfully!", "Cancellation Confirmed", JOptionPane.INFORMATION_MESSAGE);
-                loadAppointmentsIntoTable(); // Refresh table
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Error cancelling appointment: " + ex.getMessage(), "Cancellation Error", JOptionPane.ERROR_MESSAGE);
-                logger.log(java.util.logging.Level.SEVERE, "Error cancelling appointment", ex);
-            }
-        }
-    }      
-     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        loadAppointmentsIntoTable(); // Reload all appointments
-        JOptionPane.showMessageDialog(this, "Appointment list refreshed.", "Refresh", JOptionPane.INFORMATION_MESSAGE);
-    } 
+    }//GEN-LAST:event_btnSearchActionPerformed
+        
+    
      
    
     public static void main(String args[]) {

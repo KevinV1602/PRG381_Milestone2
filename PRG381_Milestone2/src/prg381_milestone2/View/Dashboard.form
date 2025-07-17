@@ -299,6 +299,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Book Appointment"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBookAppointmentActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="com.toedter.calendar.JDateChooser" name="dateChooserAppointment">
                 </Component>
@@ -380,6 +383,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Search"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSearchActionPerformed"/>
+                  </Events>
                 </Component>
                 <Container class="javax.swing.JScrollPane" name="JScrollPane">
 
@@ -403,16 +409,25 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Update"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUpdateActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnCancel">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Cancel"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnRefresh">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Refresh"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRefreshActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
