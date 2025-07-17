@@ -966,7 +966,7 @@ public class Dashboard extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "StudentID", "Counselor", "Rating", "Comments"
             }
         ));
         jScrollPane2.setViewportView(tblStudents);
